@@ -8,7 +8,7 @@ public class Permutation {
         System.out.println("Teksti u enkriptua");
     }
 
-    public void decrpyt(String string) {
+    public void decrypt(String string) {
    
         System.out.println("Teksti u dektriptua");
 
