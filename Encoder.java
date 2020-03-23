@@ -1,45 +1,48 @@
 import java.util.ArrayList;
+
+
 public class Encoder {
-    private String userphrase;
-    private static final char[] Letters = {' ','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r',
-            's','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','.',',','?'};
-    private static final String[] MorseLet = {"/",".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",
+    private String FjaliaEShtypur;
+    private static final char[] Shkronjat = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
+            'R',
+            'S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?',':','/','&'};
+    private static final String[] ShkronjatMorse = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---",
+            "-.-",
             ".-..","--","-.","---",
             ".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--",
-            "....-",".....","-....","--...","---..","----.",".-.-.-","--..--","..--.."};
+            "....-",".....","-....","--...","---..","----.",".-.-.-","--..--","..--..","---...","-..-.",".-..."};
 
 
-    private String InputPhrase;
-    private String[] encodephrase;
+    private String Fjalia;
+    private String[] FjaliaeKoduar;
     private int wordlength;
 
-    public Encoder(String phrase) {
-        InputPhrase = phrase;
-        userphrase = phrase.toLowerCase();
-        wordlength = userphrase.length();
-        encodephrase = new String[wordlength];
+    public Encoder(String sentence) {
+        Fjalia = sentence;
+        FjaliaEShtypur = sentence.toUpperCase();
+        wordlength = FjaliaEShtypur.length();
+        FjaliaeKoduar = new String[wordlength];
         ChangeCode();
     }
 
     public void ChangeCode() {
-        char[] letarray = userphrase.toCharArray();
+        char[] letarray = FjaliaEShtypur.toCharArray();
         for(int i=0; i<wordlength; i++){
-            for(int j=0; j<Letters.length; j++){
-                if (letarray[i] == Letters[j]){
-                    encodephrase[i] = MorseLet[j];
+            for(int j=0; j<Shkronjat.length; j++){
+                if (letarray[i] == Shkronjat[j]){
+                    FjaliaeKoduar[i] = ShkronjatMorse[j];
                 }
-                if(letarray[i] == ' '){
-                    encodephrase[i]= "@";
-                }
+                if(letarray[i]==' ')
+                    FjaliaeKoduar[i]=" / ";
             }
         }
     }
 
     public void OutputMorse(){
-        System.out.println("\n" + "\"" + InputPhrase + "\"" + " In Morse Code is:");
-        for(String s : encodephrase){
+        System.out.println("\n" + "\"" + Fjalia + "\"" + " In Morse Code is:");
+        for(String s : FjaliaeKoduar){
             if(s == "@"){
-                System.out.print("   ");
+                System.out.print(' ');
             }
             else{
                 System.out.printf("%s ",s);
