@@ -1,5 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Morse {
 
@@ -40,12 +42,105 @@ public class Morse {
         } while(cont);
 
         if(choice == 1){
-            Encoder encode = new Encoder(teksti);
-            encode.OutputMorse();
+            Encoder encoder=new Encoder(teksti);
+            encoder.OutputMorse();
         }
         if(choice == 2){
             code = input.nextLine();
             Decoder decode = new Decoder(teksti);
+        }
+    }
+
+    protected static class Encoder {
+        private String FjaliaEShtypur;
+        private  final char[] Shkronjat = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
+                'R',
+                'S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?',':','/','&'};
+        private  final String[] ShkronjatMorse = {"/",".-","-...","-.-.","-..",".","..-.","--.","....","..",".---",
+                "-.-",
+                ".-..","--","-.","---",
+                ".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--",
+                "....-",".....","-....","--...","---..","----.",".-.-.-","--..--","..--..","---...","-..-.",".-..."};
+
+
+        private String Fjalia;
+        private String[] FjaliaeKoduar;
+        private int wordlength;
+
+        public Encoder(String sentence) {
+            Fjalia = sentence;
+            FjaliaEShtypur = sentence.toUpperCase();
+            wordlength = FjaliaEShtypur.length();
+            FjaliaeKoduar = new String[wordlength];
+            ChangeCode();
+        }
+
+        public void ChangeCode() {
+            char[] letarray = FjaliaEShtypur.toCharArray();
+            for(int i=0; i<wordlength; i++){
+                for(int j=0; j<Shkronjat.length; j++){
+                    if (letarray[i] == Shkronjat[j]){
+                        FjaliaeKoduar[i] = ShkronjatMorse[j];
+                    }
+                }
+            }
+        }
+
+        public void OutputMorse(){
+            System.out.println("\n" + "\"" + Fjalia + "\"" + " In Morse Code is:");
+            for(String s : FjaliaeKoduar){
+                if(s == "@"){
+                    System.out.print(' ');
+                }
+                else{
+                    System.out.printf("%s ",s);
+                }
+            }
+        }
+    }
+    protected static class Decoder {
+
+        private String FjaliaEShtypur;
+        private  final String[] ShkronjatMorse = {"/",".-","-...","-.-.","-..",".","..-.","--.","....","..",".---",
+                "-.-",
+                ".-..","--","-.","---",
+                ".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--",
+                "....-",".....","-....","--...","---..","----.",".-.-.-","--..--","..--..","---...","-..-.",".-..."};
+
+        private  final char[] Shkronjat = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
+                'R',
+                'S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?',':','/','&'};
+
+
+        private String[] wordamt;
+        private int wordlength;
+
+        public Decoder(String p) {
+            FjaliaEShtypur = p;
+            NdarjaEFjaleve();
+        }
+
+        public void NdarjaEShkronjave(String l) {
+
+            String[] letters = l.split("\\s");
+
+            for(int i=0; i<letters.length; i++){
+                for(int j=0; j<ShkronjatMorse.length; j++) {
+                    if (letters[i].equals(ShkronjatMorse[j])) {
+                        System.out.print(Shkronjat[j]);
+                    }
+                }
+            }
+
+            System.out.print(" ");
+        }
+        public void NdarjaEFjaleve() {
+
+            String[] words = FjaliaEShtypur.split("\\s\\s\\s");
+            wordamt = words;
+            for(int i =0; i<wordamt.length; i++) {
+                NdarjaEShkronjave(words[i]);
+            }
         }
     }
 }
