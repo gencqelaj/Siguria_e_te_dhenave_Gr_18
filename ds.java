@@ -1,7 +1,3 @@
-import java.sql.SQLOutput;
-        import java.util.InputMismatchException;
-        import java.util.Scanner;
-
 public class ds {
 
     public static void main(String[] args) {
