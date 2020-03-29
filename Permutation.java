@@ -6,27 +6,60 @@ public class Permutation {
 
     private String key;
     private String teksti;
-    private int celesi ;
+    private int celesi;
     private int length;
     private int b;
     private String replaceString;
-    private ArrayList<Integer> array ;
+    private ArrayList<Integer> array;
     private StringBuilder sb;
-    private List<String>lista;
-    public Permutation(String key, String teksti)
-    {
+    private List<String> lista;
+
+    public Permutation(String key, String teksti) {
         this.key = key;
-        this.teksti=teksti;
-        celesi = Integer.parseInt(key);
+        this.teksti = teksti;
+
+        for (int i = 0; i < key.length(); i++) {
+            if (Character.isDigit(key.charAt(i)) == false) {
+                System.out.println("Nuk mund qe ne celes te shkruani karaktere tjera perpos numrave");
+                System.exit(0);
+            }
+        }
         length = String.valueOf(celesi).length();
-        b=celesi;
+
         array = new ArrayList<Integer>();
-        do{
+
+        celesi = Integer.parseInt(key);
+        b = celesi;
+        do {
             array.add(b % 10);
             b /= 10;
-        } while  (b > 0);
-            sb = new StringBuilder();
-         replaceString = teksti.replaceAll(" ", "");
+        } while (b > 0);
+
+        for (int i = 0; i < array.size(); i++) {
+            if (array.get(i) == 0) {
+                System.out.println("Celesi nuk mund te permbaje 0");
+                System.exit(0);
+            }
+            if (array.get(i) > array.size())
+            {
+                System.out.println("Celesi nuk mund te permbaje numra qe jane me te medhenj se gjatesia e tij");
+            }
+        }
+        for (int i= 0 ; i<array.size()-1; i++)
+        {
+            for (int j=i+1; j<array.size(); j++)
+            {
+                if (array.get(i)==array.get(j))
+                {
+                    System.out.println("Nuk mund qe qelesi te kete numra qe perseriten");
+                    System.exit(0);
+                }
+            }
+        }
+
+        sb = new StringBuilder();
+
+        replaceString = teksti.replaceAll(" ", "");
         sb.append(replaceString);
 
         while (sb.length() % length != 0) {
@@ -39,8 +72,8 @@ public class Permutation {
 
     public void encrypt() {
         System.out.print("plaintext: " + " ");
-        for(String name:lista) {
-            System.out.print(name+" ");
+        for (String name : lista) {
+            System.out.print(name + " ");
         }
         System.out.println();
         System.out.print("key      : " + " ");
@@ -54,27 +87,24 @@ public class Permutation {
         String[] cifra = new String[lista.size()];
         System.out.println();
         System.out.print("ciphertext: ");
-        for (int i = 0 ; i<lista.size();i++)
-        {
-            StringBuilder sb1= new StringBuilder();
+        for (int i = 0; i < lista.size(); i++) {
+            StringBuilder sb1 = new StringBuilder();
 
-            for (int j =length ; j > 0 ; j--)
-            {
-                sb1.append(myArray[i].charAt(array.get(j-1)-1));
+            for (int j = length; j > 0; j--) {
+                sb1.append(myArray[i].charAt(array.get(j - 1) - 1));
             }
-            cifra[i]=sb1.toString();
-            System.out.print(sb1+" ");
+            cifra[i] = sb1.toString();
+            System.out.print(sb1 + " ");
         }
-        
+
         System.out.println();
         System.out.println("ciphertext: ");
-        for (int i =0 ; i<cifra.length ; i++)
-        {
+        for (int i = 0; i < cifra.length; i++) {
             System.out.print(cifra[i]);
         }
     }
 
-    public void decrpyt() {
+    public void decrypt() {
         String[] myArray = new String[lista.size()];
         lista.toArray(myArray);
 
@@ -85,35 +115,32 @@ public class Permutation {
 
         for (int i = 0; i < lista.size(); i++) {
             StringBuilder sb1 = new StringBuilder();
-            for (int j = 0; j <length; j++) {
-                int a= findIndex(array1,j+1);
+            for (int j = 0; j < length; j++) {
+                int a = findIndex(array1, j + 1);
                 sb1.append(myArray[i].charAt(a));
             }
             System.out.print(sb1);
         }
         System.out.println();
     }
-    
-    public static void reverse(Integer a[])
-    {
+
+    public static void reverse(Integer a[]) {
         Collections.reverse(Arrays.asList(a));
     }
 
-    public static int findIndex(Integer arr[], int t)
-    {
+    public static int findIndex(Integer arr[], int t) {
         if (arr == null) {
             return -1;
         }
-        
+
         int len = arr.length;
         int i = 0;
-        
+
         while (i < len) {
-            
+
             if (arr[i] == t) {
                 return i;
-            }
-            else {
+            } else {
                 i = i + 1;
             }
         }
