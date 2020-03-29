@@ -1,15 +1,15 @@
+import java.util.InputMismatchException;
 public class MorseDecoder {
 
-    private String FjaliaEShtypur;
-    private  final String[] ShkronjatMorse = {"/",".-","-...","-.-.","-..",".","..-.","--.","....","..",".---",
-            "-.-",
-            ".-..","--","-.","---",
-            ".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--..","-----",".----","..---","...--",
-            "....-",".....","-....","--...","---..","----.",".-.-.-","--..--","..--..","---...","-..-.",".-..."};
 
-    private  final char[] Shkronjat = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
-            'R',
-            'S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','.',',','?',':','/','&'};
+    private final String[] ShkronjatMorse = {"/", ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---",
+            "-.-",".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "-----", ".----", "..---", "...--",
+            "....-", ".....", "-....", "--...", "---..", "----.", ".-.-.-", "--..--", "..--..", "---...", "-..-",
+            ".", ".-...","-.-.-.","-.--.","-.--.-","-...-",".-.-."};
+    private final char[] Shkronjat = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+            'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',',
+            '?', ':', '/', '&',';','(',')','=','+'};
+    private String FjaliaEShtypur;
 
 
     private String[] wordamt;
@@ -20,6 +20,8 @@ public class MorseDecoder {
         NdarjaEFjaleve();
     }
 
+
+
     public void NdarjaEShkronjave(String l) {
 
         String[] letters = l.split("\\s");
@@ -28,6 +30,11 @@ public class MorseDecoder {
             for(int j=0; j<ShkronjatMorse.length; j++) {
                 if (letters[i].equals(ShkronjatMorse[j])) {
                     System.out.print(Shkronjat[j]);
+                }
+                else if(letters[i].equals(Shkronjat[j]))
+                {
+                    System.out.println("Jo valide");
+                    System.exit(0);
                 }
             }
         }
@@ -40,4 +47,6 @@ public class MorseDecoder {
             NdarjaEShkronjave(words[i]);
         }
     }
+
+
 }
