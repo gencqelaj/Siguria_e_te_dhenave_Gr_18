@@ -31,6 +31,22 @@ public class ds {
                         default:
                             System.out.println("Zgjedh si argument te dyte encrypt ose decrypt");
                     }
+                    case "tapcode":
+
+            String tipi = args[1];
+            String input = args[2];
+            TapCode tapObj = new TapCode(input);
+                    switch (tipi) {
+                        case "encode":
+                            tapObj.enkripto();
+                            break;
+                        case "decode":
+                           tapObj.dekripto();
+                            break;
+                        default:
+                            System.out.println("Zgjedh si argument te dyte encode ose decode");
+                            System.exit(1);
+                    }
                     break;
                 default:
                     System.out.println("Argumenti i pare eshte gabim , zgjedh permutation morse apo tap-code per te vazhduar");
