@@ -31,11 +31,6 @@ public class MorseDecoder {
                 if (letters[i].equals(ShkronjatMorse[j])) {
                     System.out.print(Shkronjat[j]);
                 }
-                else if(letters[i].equals(Shkronjat[j]))
-                {
-                    System.out.println("Jo valide");
-                    System.exit(0);
-                }
             }
         }
         System.out.print(" ");
