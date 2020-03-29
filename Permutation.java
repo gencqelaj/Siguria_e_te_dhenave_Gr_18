@@ -65,7 +65,8 @@ public class Permutation {
             cifra[i]=sb1.toString();
             System.out.print(sb1+" ");
         }
-
+        
+        System.out.println();
         System.out.println("ciphertext: ");
         for (int i =0 ; i<cifra.length ; i++)
         {
