@@ -1,42 +1,22 @@
 package Tapcode;
 
-import java.util.Scanner;
 import java.lang.String;
+import java.util.Scanner;
 
 public class Tapcode {
 
-	public static void main(String[] args) {
-//       String input = "GENCI";
-		String stringu = "";
-		String plainString = "";
-		String matrica[][] = { { "A", "B", "C", "D", "E" }, { "F", "G", "H", "I", "J" }, { "L", "M", "N", "O", "P" },
-				{ "Q", "R", "S", "T", "U" }, { "V", "W", "X", "Y", "Z" } };
+	private String matrica[][] = { { "A", "B", "C", "D", "E" }, { "F", "G", "H", "I", "J" },
+			{ "L", "M", "N", "O", "P" }, { "Q", "R", "S", "T", "U" }, { "V", "W", "X", "Y", "Z" } };
 
-		String shkronjatEKoduara[][] = { { ". .", ". ..", ". ...", ". ....", ". ....." },
-				{ ".. .", ".. ..", ".. ...", ".. ....", ".. ....." },
-				{ "... .", "... ..", "... ...", "... ....", "... ....." },
-				{ ".... .", ".... ..", ".... ...", ".... ....", ".... ....." },
-				{ "..... .", "..... ..", "..... ...", "..... ....", "..... ....." } };
+	private String shkronjatEKoduara[][] = { { ". .", ". ..", ". ...", ". ....", ". ....." },
+			{ ".. .", ".. ..", ".. ...", ".. ....", ".. ....." },
+			{ "... .", "... ..", "... ...", "... ....", "... ....." },
+			{ ".... .", ".... ..", ".... ...", ".... ....", ".... ....." },
+			{ "..... .", "..... ..", "..... ...", "..... ....", "..... ....." } };
+	private String input;
 
-		System.out.print("Sheno enkriptim ose dekriptim : ");
-		Scanner scanner = new Scanner(System.in);
-		String tipi = scanner.nextLine();
-
-		System.out.print("Jepe inputin : ");
-		Scanner scanner_input = new Scanner(System.in);
-		String input = scanner_input.nextLine();
-
-		switch (tipi.toLowerCase()) {
-		case "enkriptim":
-			enkripto(input.toUpperCase(), matrica, shkronjatEKoduara);
-			break;
-		case "dekriptim":
-			dekripto(input, shkronjatEKoduara, matrica);
-			break;
-		default:
-			System.out.println("Gabim ne tip");
-		}
-
+	public Tapcode(String _input) {
+		this.input = _input;
 	}
 
 	static String indexOf(String[][] ar, int row, int col, String x, String[][] shkronjatEnkriptuara) {
@@ -45,24 +25,25 @@ public class Tapcode {
 			for (int j = 0; j < col; j++) {
 				if (ar[i][j].equals(x)) {
 					stringu += shkronjatEnkriptuara[i][j];
+//                    stringu += " ";
 				}
 			}
 		}
 		return stringu;
 	}
 
-	static void enkripto(String input, String matrica[][], String shkronjatEKoduara[][]) {
-		char[] inputArray = new char[input.length()];
+	public void enkripto() {
+		char[] inputArray = new char[this.input.length()];
 		String stringu = "";
-		for (int i = 0; i < input.length(); i++) {
-			inputArray[i] = input.charAt(i);
+		for (int i = 0; i < this.input.length(); i++) {
+			inputArray[i] = this.input.charAt(i);
 		}
 
 		for (char ch : inputArray) {
 			if (Character.toString(ch) == " ") {
 				stringu += " ";
 			}
-			stringu += indexOf(matrica, 5, 5, Character.toString(ch), shkronjatEKoduara);
+			stringu += indexOf(this.matrica, 5, 5, Character.toString(ch), this.shkronjatEKoduara);
 			stringu += " ";
 		}
 		;
@@ -72,15 +53,15 @@ public class Tapcode {
 		System.out.println(stringu);
 	}
 
-	static void dekripto(String stringu, String[][] shkronjatEKoduara, String[][] matrica) {
-		String[] stringArray = stringu.split("(?<!\\G\\S+)\\s");
-//       System.out.println(stringArray);
+	public void dekripto() {
+		String[] stringArray = this.input.split("(?<!\\G\\S+)\\s");
+//        System.out.println(stringArray);
 		String plainString = "";
 		for (String ch : stringArray) {
 			if (ch.equals(" ")) {
 				plainString += " ";
 			}
-			plainString += indexOf(shkronjatEKoduara, 5, 5, ch, matrica);
+			plainString += indexOf(this.shkronjatEKoduara, 5, 5, ch, this.matrica);
 		}
 		;
 
@@ -88,4 +69,5 @@ public class Tapcode {
 
 		System.out.println(plainString);
 	}
+
 }
