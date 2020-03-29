@@ -5,7 +5,7 @@ public class ds {
             Permutation permutation = new Permutation(args[2],args[3]);
             if ("encrypt".equals(args[1])) {
                 permutation.encrypt();
-            } else if ("decrypt".equals(args[2])) {
+            } else if ("decrypt".equals(args[1])) {
                 permutation.decrpyt();
             }
         }
