@@ -32,6 +32,26 @@ public class ds {
                         default:
                             System.out.println("Zgjedh si argument te dyte encrypt ose decrypt");
                     }
+                    case "tapcode":
+                    if(args.length != 3)
+                    {
+                        System.out.println("Per te ekzekutuar tapcode ju duhen vetem 3 argumente: tapcode encode/decode 'teksti' ");
+                        System.exit(1);
+                    }
+                    String tipi = args[1];
+                    String input = args[2];
+                    TapCode tapObj = new TapCode(input);
+                    switch (tipi) {
+                        case "encode":
+                            tapObj.enkripto();
+                            break;
+                        case "decode":
+                           tapObj.dekripto();
+                            break;
+                        default:
+                            System.out.println("Zgjedh si argument te dyte encode ose decode");
+                            System.exit(1);
+                    }
                     break;
 
                 default:
