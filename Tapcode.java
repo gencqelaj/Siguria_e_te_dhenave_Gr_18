@@ -1,73 +1,97 @@
 package Tapcode;
 
-import java.lang.String;
 import java.util.Scanner;
+import java.lang.String;
 
-public class Tapcode {
+public class TapCode {
 
-	private String matrica[][] = { { "A", "B", "C", "D", "E" }, { "F", "G", "H", "I", "J" },
-			{ "L", "M", "N", "O", "P" }, { "Q", "R", "S", "T", "U" }, { "V", "W", "X", "Y", "Z" } };
+    private String matrica[][] = { { "A", "B", "C", "D", "E" }, { "F", "G", "H", "I", "J" },
+            { "L", "M", "N", "O", "P" }, { "Q", "R", "S", "T", "U" }, { "V", "W", "X", "Y", "Z" } };
 
-	private String shkronjatEKoduara[][] = { { ". .", ". ..", ". ...", ". ....", ". ....." },
-			{ ".. .", ".. ..", ".. ...", ".. ....", ".. ....." },
-			{ "... .", "... ..", "... ...", "... ....", "... ....." },
-			{ ".... .", ".... ..", ".... ...", ".... ....", ".... ....." },
-			{ "..... .", "..... ..", "..... ...", "..... ....", "..... ....." } };
-	private String input;
+    private String shkronjatEKoduara[][] = { { ". .", ". ..", ". ...", ". ....", ". ....." },
+            { ".. .", ".. ..", ".. ...", ".. ....", ".. ....." },
+            { "... .", "... ..", "... ...", "... ....", "... ....." },
+            { ".... .", ".... ..", ".... ...", ".... ....", ".... ....." },
+            { "..... .", "..... ..", "..... ...", "..... ....", "..... ....." } };
+    private String input;
 
-	public Tapcode(String _input) {
-		this.input = _input;
-	}
+    public TapCode() {
+        super();
+    }
 
-	static String indexOf(String[][] ar, int row, int col, String x, String[][] shkronjatEnkriptuara) {
-		String stringu = "";
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
-				if (ar[i][j].equals(x)) {
-					stringu += shkronjatEnkriptuara[i][j];
-//                    stringu += " ";
-				}
-			}
-		}
-		return stringu;
-	}
+    public TapCode(String _input) {
+        super();
+        this.input = _input.toUpperCase();
+    }
 
-	public void enkripto() {
-		char[] inputArray = new char[this.input.length()];
-		String stringu = "";
-		for (int i = 0; i < this.input.length(); i++) {
-			inputArray[i] = this.input.charAt(i);
-		}
+    static String indexOf(String[][] ar, int row, int col, String x, String[][] shkronjatEnkriptuara) {
+        String stringu = "";
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (ar[i][j].equals(x)) {
+                    stringu += shkronjatEnkriptuara[i][j];
+                }
+            }
+        }
+        return stringu;
+    }
 
-		for (char ch : inputArray) {
-			if (Character.toString(ch) == " ") {
-				stringu += " ";
-			}
-			stringu += indexOf(this.matrica, 5, 5, Character.toString(ch), this.shkronjatEKoduara);
-			stringu += " ";
-		}
-		;
+    public void enkripto() {
 
-		System.out.println("Encrypting....");
+        if (!isValidEnkripto(this.input)) {
+            System.out.println("inputi duhet te kete vetem shkronja");
+            System.exit(1);
+        }
+        char[] inputArray = new char[this.input.length()];
+        String stringu = "";
+        for (int i = 0; i < this.input.length(); i++) {
+            inputArray[i] = this.input.charAt(i);
+        }
 
-		System.out.println(stringu);
-	}
+        for (char ch : inputArray) {
+            if (Character.toString(ch).equals("K")) {
+                stringu += indexOf(this.matrica, 5, 5, "C", this.shkronjatEKoduara);
+                stringu += " ";
+                continue;
+            }
+            stringu += indexOf(this.matrica, 5, 5, Character.toString(ch), this.shkronjatEKoduara);
+            stringu += " ";
+        };
 
-	public void dekripto() {
-		String[] stringArray = this.input.split("(?<!\\G\\S+)\\s");
-//        System.out.println(stringArray);
-		String plainString = "";
-		for (String ch : stringArray) {
-			if (ch.equals(" ")) {
-				plainString += " ";
-			}
-			plainString += indexOf(this.shkronjatEKoduara, 5, 5, ch, this.matrica);
-		}
-		;
+        System.out.println("Encrypting....");
 
-		System.out.println("Decrypting....");
+        System.out.println(stringu);
+    }
 
-		System.out.println(plainString);
-	}
+    public void dekripto() {
 
+        if (!isValidDekripto(this.input)) {
+            System.out.println("inputi duhet te kete vetem pika dhe hapsira");
+            System.exit(1);
+        }
+        System.out.println("Decrypting....");
+
+        String[] inputArray = this.input.split("[ ][ ]+");
+        String plainString = "";
+        for (int i = 0; i < inputArray.length; i++) {
+            String[] stringArray = inputArray[i].split("(?<!\\G\\S+)\\s");
+
+            for (String ch : stringArray) {
+
+                plainString += indexOf(this.shkronjatEKoduara, 5, 5, ch, this.matrica);
+            };
+
+            plainString += " ";
+
+        }
+        System.out.println(plainString);
+    }
+
+    public boolean isValidEnkripto(String input) {
+        return input.matches("[ A-Z]+");
+    }
+
+    public boolean isValidDekripto(String input) {
+        return input.matches("[. ]+");
+    }
 }
