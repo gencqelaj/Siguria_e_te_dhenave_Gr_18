@@ -1,5 +1,3 @@
-package Tapcode;
-
 import java.util.Scanner;
 import java.lang.String;
 
@@ -16,6 +14,7 @@ public class TapCode {
     private String input;
 
     public TapCode(String _input) {
+        super();
         this.input = _input.toUpperCase();
     }
 
