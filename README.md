@@ -40,3 +40,10 @@ Gjithashtu në konstruktor janë bërë disa manipulime me stringje dhe arrays t
 	-Për cdo bllok të tekstit rradhiten karakteret në bazë të celësit të dhenë dhe pastaj shfaqen në output. 
 
 -Ky ishte përshkrimi i shkurtë sa i përket Komandës Permutation.
+
+
+////////////////////////////////////////////
+
+
+Tap Code
+Tap code eshte nje enkriptim i thjeshte i tekstit i perdorur nga ushtaret ne burgje. Fillimisht krijohen 2 matrica, njera e cila i perfshin shkronjat e alfabetit anglez, perveq shkronjes K e cila zevendesohet me C dhe tjetra e perbere nga kombinime te ndryshme te pikave, te cilat zevendesojne "taps" qe nevojiten per te formuar nje shkronje ne baze te rreshtit dhe kolones se ku gjendet ne matricen e pare ajo shkronje.
