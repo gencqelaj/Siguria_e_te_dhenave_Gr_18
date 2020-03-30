@@ -15,10 +15,6 @@ public class TapCode {
             { "..... .", "..... ..", "..... ...", "..... ....", "..... ....." } };
     private String input;
 
-    public TapCode() {
-        super();
-    }
-
     public TapCode(String _input) {
         super();
         this.input = _input.toUpperCase();
