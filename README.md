@@ -47,3 +47,17 @@ Gjithashtu në konstruktor janë bërë disa manipulime me stringje dhe arrays t
 
 Tap Code
 Tap code eshte nje enkriptim i thjeshte i tekstit i perdorur nga ushtaret ne burgje. Fillimisht krijohen 2 matrica, njera e cila i perfshin shkronjat e alfabetit anglez, perveq shkronjes K e cila zevendesohet me C dhe tjetra e perbere nga kombinime te ndryshme te pikave, te cilat zevendesojne "taps" qe nevojiten per te formuar nje shkronje ne baze te rreshtit dhe kolones se ku gjendet ne matricen e pare ajo shkronje.
+
+Pastaj eshte krijuar nje String me emrin input si variabel private i cili eshte argumenti i 3t i Tap-code, dhe qe eshte dhene ne konstruktor ne menyre qe te inicializohet, arsyja pse eshte ne konstruktor eshte sepse eshte variabel private dhe nuk mund t'i qasesh nga klasa tjera.
+
+Pastaj funksioni indexof kontrollon nese shkronjat e dhena te tekstit gjenden ne matricen e pare, si dhe shton simbolet perkatese ne String-un stringu dhe ne fund e kthen kete variabel.
+
+Funksioni enkripto e ben enkriptimin e tekstit, brenda tij fillimisht thirret funksioni isValidEnkripto per te validuar inputin, pastaj krijohet nje array e cila e ndan teksin ne karaktere dhe secili karakter eshte element i ketij array. Pastaj shikohet nese si karakter kemi shkronjen K dhe e zevendesojme me simbolin e shkronjes C(kusht i detyres) ndersa shkronjat tjera i zevendesojme me simbolet perkatese. Dhe ne fund shfaqet ne ekran teksti i enkriptuar.
+
+Funksioni dekripto ben dekriptimin e tekstit te enkriptuar paraprakishte, fillimisht thirret funksioni isValidDekripto per te shikuar nese teksti i dhene permban vetem hapesira dhe shkronja, pastaj behet ndarja e tekstit ne fjale per qdo 2 hapesira (pra aty ku jane te shenuara qdo 2 hapesira behet ndarja me split) dhe qdo fjale behet pjese e nje array, pastaj qdo fjale ndahet ne qdo te dyten hapesire (sepse nje hapesire rezervohet per ndarjen e pikave sipas rreshtit dhe kolones) dhe keto futen ne nje array tjeter, ku qdo karakter i qdo fjale eshte si element ne vete i ketij array. Ne fund behet dekriptimi i ketyre karakterve dhe shtohen ne variablen plainString dhe pastaj shfaqet ne ekran teksti i dekriptuar.
+
+Funksioni isValidEnkripto e kthen true nese teksti permban vetem hapesira dhe shkronja te medha prej A deri ne Z.
+
+Funksioni isValidDekripto e kthen true nese teksti permban vetem pika dhe hapesira.
+
+Ky ishte nje pershkrim i thjeshte sa i perket komandes Tap-code dhe nenkomandav Enkripto dhe Dekripto.
