@@ -238,5 +238,8 @@ private static Boolean FileExists(String user, String path, String type){
         boolean exists = tempFile.exists();
         return exists;
     }    private static String encode(BigInteger bigInt) throws UnsupportedEncodingException {
+private static String encode(BigInteger bigInt) throws UnsupportedEncodingException {
 
+        return new String(Base64.encodeInteger(bigInt), "ASCII");
+    }
 }
