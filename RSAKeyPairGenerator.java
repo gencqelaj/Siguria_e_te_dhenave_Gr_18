@@ -18,7 +18,6 @@ import java.io.*;
 import java.math.BigInteger;
 
 
-
 class RSAKeyPairGenerator {
   
    private static String Path = "C:\\\\Users\\\\Admin\\\\Desktop\\\\keys\\\\";
@@ -141,5 +140,10 @@ class RSAKeyPairGenerator {
         builder.append(tag);
         builder.append(">\n");
     }
+private static Boolean FileExists(String user, String path, String type){
+        File tempFile = new File("" + path +user+type+"");
+        boolean exists = tempFile.exists();
+        return exists;
+    }    private static String encode(BigInteger bigInt) throws UnsupportedEncodingException {
 
 }
