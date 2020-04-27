@@ -160,6 +160,22 @@ private static void Import(String sourceFile, String destPath, String user) thro
         }
 
     }
+  
+  
+private static Boolean IsPrivateKey(String file){
+        try {
+                Document doc = ParseXMLFile(file);
+                doc.getDocumentElement().normalize();
+                NodeList node = doc.getElementsByTagName("P");
+                if(node.item(0) != null)
+                {
+                    return Boolean.TRUE;
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Boolean.FALSE;
+    }
     private static void write(StringBuilder builder, String tag, BigInteger bigInt) throws UnsupportedEncodingException {
       
         builder.append("\t<");
