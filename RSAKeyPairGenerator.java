@@ -59,5 +59,24 @@ class RSAKeyPairGenerator {
             e.printStackTrace();
         }
     }
+  
+  public static void main(String[] args) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, ParserConfigurationException, SAXException {
+        String argumenti2 = "create_user";
+        String argumeti3 = "Visar";
+        Boolean exists = FileExists(argumeti3, Path, ".xml");
+        if(argumenti2 == "create_user") {
+            if (!exists) {
+                create_user(argumeti3, Path);
+            } else {
+                System.out.println("Celesi '" + argumeti3 + "' ekziston paraprakisht.");
+            }
+        }
+        else if(argumenti2 == "delete_user"){
+
+                delete_user(argumeti3, Path);
+
+        }
+        
+    }
 
 }
