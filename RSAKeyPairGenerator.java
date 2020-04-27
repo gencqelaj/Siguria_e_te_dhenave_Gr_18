@@ -176,6 +176,27 @@ private static Boolean IsPrivateKey(String file){
         }
         return Boolean.FALSE;
     }
+  private static void generatePublic(String file, String path, String user, Boolean isfile) throws ParserConfigurationException, IOException, SAXException {
+        Document PublicKeyDoc;
+        if(isfile) {
+            Document doc = ParseXMLFile(file);
+            doc.getDocumentElement().normalize();
+
+            String Modulus = doc.getElementsByTagName("Modulus").item(0).getTextContent();
+            String Exponent = doc.getElementsByTagName("Exponent").item(0).getTextContent();
+
+            StringBuilder Publicbuilder = new StringBuilder();
+            Publicbuilder.append("<RSAKeyValue>\n");
+            writeString(Publicbuilder, "Modulus", Modulus);
+            writeString(Publicbuilder, "Exponent", Exponent);
+            Publicbuilder.append("</RSAKeyValue>");
+             PublicKeyDoc = ConvertStringToDocumentBuilder(Publicbuilder.toString());
+        }
+        else{
+             PublicKeyDoc = ConvertStringToDocumentBuilder(file);
+        }
+        writeXmlDocumentToXmlFile(PublicKeyDoc, ""+path+user+".pub.xml");
+    }
     private static void write(StringBuilder builder, String tag, BigInteger bigInt) throws UnsupportedEncodingException {
       
         builder.append("\t<");
