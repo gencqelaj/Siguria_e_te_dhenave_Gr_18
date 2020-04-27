@@ -170,7 +170,24 @@ private static void Import(String sourceFile, String destPath, String user) thro
 
     }
   
-  
+private static String GetRequest(String url) throws IOException {
+        //String url = " https://pastebin.com/raw/568vxV7i";
+        URL urlObj = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+        connection.setRequestMethod("GET");
+        Integer responseCode = connection.getResponseCode();
+        StringBuffer response = new StringBuffer();
+        if(responseCode == HttpURLConnection.HTTP_OK){
+            BufferedReader inputreader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+
+            while ((inputLine = inputreader.readLine()) != null){
+                response.append(inputLine);
+            }
+            inputreader.close();
+            //System.out.println(response.toString());
+        }  
 private static Boolean IsPrivateKey(String file){
         try {
                 Document doc = ParseXMLFile(file);
