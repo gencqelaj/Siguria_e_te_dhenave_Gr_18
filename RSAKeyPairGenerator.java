@@ -16,13 +16,14 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.math.BigInteger;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.*;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 class RSAKeyPairGenerator {
@@ -70,6 +71,14 @@ class RSAKeyPairGenerator {
         {
             e.printStackTrace();
         }
+    }
+  
+  private static Document ParseXMLFile(String file) throws ParserConfigurationException, IOException, SAXException {
+        File inputFile = new File(file);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(inputFile);
+        return doc;
     }
   
   public static void main(String[] args) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, ParserConfigurationException, SAXException {
