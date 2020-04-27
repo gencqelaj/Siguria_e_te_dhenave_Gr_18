@@ -139,7 +139,27 @@ class RSAKeyPairGenerator {
   private static void Export_xml(String sourceFile, String destFile) throws IOException {
         Files.move(Paths.get(sourceFile), Paths.get(destFile));
     }
+private static void Import(String sourceFile, String destPath, String user) throws IOException, ParserConfigurationException, SAXException, NoSuchAlgorithmException {
+        Boolean getRequest = sourceFile.matches("^(http|https)://.*$");
+        Boolean isPrivateKey;
 
+        if(getRequest){
+            String response = GetRequest(sourceFile);
+                generatePublic(response, destPath, user, Boolean.FALSE);
+        }
+    else{
+            isPrivateKey = IsPrivateKey(sourceFile);
+            if(isPrivateKey == Boolean.TRUE){
+                generatePublic(sourceFile, destPath, user, Boolean.TRUE);
+                Export_xml(sourceFile,""+destPath+user+".xml");
+            }
+            else{
+                Export_xml(sourceFile,""+destPath+user+".pub.xml");
+            }
+
+        }
+
+    }
     private static void write(StringBuilder builder, String tag, BigInteger bigInt) throws UnsupportedEncodingException {
       
         builder.append("\t<");
