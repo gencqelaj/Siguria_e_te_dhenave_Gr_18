@@ -136,6 +136,9 @@ class RSAKeyPairGenerator {
         System.out.println("Eshte krijuar celesi public keys/"+user+".pub.xml");
 
     }
+  private static void Export_xml(String sourceFile, String destFile) throws IOException {
+        Files.move(Paths.get(sourceFile), Paths.get(destFile));
+    }
 
     private static void write(StringBuilder builder, String tag, BigInteger bigInt) throws UnsupportedEncodingException {
       
