@@ -30,6 +30,25 @@ class RSAKeyPairGenerator{
         Document doc = dBuilder.parse(inputFile);
         return doc;
     }
+   
+   private static Document ConvertStringToDocumentBuilder(String stringBuilder)
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder=null;
+        Document doc = null;
+        try {
+            builder = factory.newDocumentBuilder();
+            doc = builder.parse(new InputSource(new StringReader(stringBuilder)));
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
 
 
 }
