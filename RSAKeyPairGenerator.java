@@ -23,7 +23,13 @@ class RSAKeyPairGenerator{
            }
        }
 
-
+    private static Document ParseXMLFile(String file) throws ParserConfigurationException, IOException, SAXException {
+        File inputFile = new File(file);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(inputFile);
+        return doc;
+    }
 
 
 }
