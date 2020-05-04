@@ -136,5 +136,23 @@ class RSAKeyPairGenerator{
         writeXmlDocumentToXmlFile(PublicKeyDoc, ""+path+user+".pub.xml");
     }
 
+public static void delete_user(String user, String path){
+        Boolean existPrivate = FileExists(user, path, ".xml");
+        Boolean existPublic = FileExists(user, path, ".pub.xml");
+        if(existPrivate) {
+            File file = new File("" + path + user + ".xml");
+            file.delete();
+            System.out.println("Eshte larguar celesi private keys/"+user+".xml");
+        }
+        if(existPublic) {
+            File PublicKeyfile = new File("" + path + user + ".pub.xml");
+            PublicKeyfile.delete();
+            System.out.println("Eshte larguar celesi public keys/"+user+".pub.xml");
+        }
+        if(!existPrivate & !existPublic) {
+            System.out.println("Celesi '"+user+"'nuk ekziston.");
+        }
+    }
 
+   
 }
