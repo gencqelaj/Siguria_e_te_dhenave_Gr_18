@@ -94,6 +94,26 @@ class RSAKeyPairGenerator{
         System.out.println("Eshte krijuar celesi public keys/"+user+".pub.xml");
 
     }
+   private static String GetRequest(String url) throws IOException {
+
+        URL urlObj = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+        connection.setRequestMethod("GET");
+
+        Integer responseCode = connection.getResponseCode();
+        StringBuffer response = new StringBuffer();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader inputreader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+
+            while ((inputLine = inputreader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            inputreader.close();
+        }
+        return response.toString();
+    }
 
 
 }
