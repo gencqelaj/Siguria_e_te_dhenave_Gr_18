@@ -189,5 +189,32 @@ public static void delete_user(String user, String path){
         return Boolean.FALSE;
     }
 
+    public static void Export_xml(String sourceFile, String destFile) throws IOException {
+        Files.move(Paths.get(sourceFile), Paths.get(destFile));
+    }
+
+    public static void export(String file1 , String file2){
+        FileInputStream instream=null;
+        FileOutputStream outstream=null;
+        try{
+            File infile =new File("C:\\Desktop\\keys\\"+file1);
+            File outfile =new File("C:\\Desktop\\keys\\"+file2);
+            instream = new FileInputStream(infile);
+            outstream = new FileOutputStream(outfile);
+
+            byte[] buffer = new byte[1024];
+            int length;
+
+            while ((length = instream.read(buffer)) > 0){
+                outstream.write(buffer, 0, length);
+            }
+
+            instream.close();
+            outstream.close();
+        }
+        catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+    }
    
 }
