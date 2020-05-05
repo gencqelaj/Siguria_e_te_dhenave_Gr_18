@@ -174,6 +174,20 @@ public static void delete_user(String user, String path){
                 System.out.println("Fajlli i dhene nuk eshte qeles valid.");
         }
     }
+    public static Boolean IsPrivateKey(String file){
+        try {
+            Document doc = ParseXMLFile(file);
+            doc.getDocumentElement().normalize();
+            NodeList node = doc.getElementsByTagName("P");
+            if(node.item(0) != null)
+            {
+                return Boolean.TRUE;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Boolean.FALSE;
+    }
 
    
 }
