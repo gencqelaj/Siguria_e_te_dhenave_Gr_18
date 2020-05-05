@@ -153,6 +153,27 @@ public static void delete_user(String user, String path){
             System.out.println("Celesi '"+user+"'nuk ekziston.");
         }
     }
+   
+    static void Import(String sourceFile, String destPath, String user) throws IOException, ParserConfigurationException, SAXException {
+        Boolean getRequest = sourceFile.matches("^(http|https)://.*$");
+        Boolean isPrivateKey;
+
+        if (getRequest) {
+            String response = GetRequest(sourceFile);
+            generatePublic(response, destPath, user, Boolean.FALSE);
+        } else {
+            if (sourceFile.contains(".xml")) {
+                isPrivateKey = IsPrivateKey(sourceFile);
+                if (isPrivateKey == Boolean.TRUE) {
+                    generatePublic(sourceFile, destPath, user, Boolean.TRUE);
+                    Export_xml(sourceFile, "" + destPath + user + ".xml");
+                } else {
+                    Export_xml(sourceFile, "" + destPath + user + ".pub.xml");
+                }
+            } else
+                System.out.println("Fajlli i dhene nuk eshte qeles valid.");
+        }
+    }
 
    
 }
