@@ -205,7 +205,7 @@ case "export-key":
         break;
 
     default:
-        System.out.println("Ju lutem shtypni njeren nga komandat permutation morse apo tap-code si argument te pare");
+        System.out.println("Ju lutem shtypni njeren nga komandat permutation morse ,tap-code, create-user,delete-user, apo export-key si argument te pare");
 
 }
 
