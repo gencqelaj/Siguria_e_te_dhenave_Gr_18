@@ -187,6 +187,48 @@ case "export-key":
                         }
                     }
                     break;
+        
+         case "import-key":
+                    RSAKeyPairGenerator obj3 = new RSAKeyPairGenerator();
+                    String emricelesit = args[1];
+                    String celesiqeimportohet = args[2];
+                    File tmpDir = new File(celesiqeimportohet);
+                    boolean exists21 = tmpDir.exists();
+                    if (celesiqeimportohet.matches("^(http|https)://.*$")){
+                        Boolean existpub = obj3.FileExists(emricelesit, obj3.getPath(), ".pub.xml");
+                        Boolean existpriv = obj3.FileExists(emricelesit, obj3.getPath(), ".xml");
+
+
+                        if (!existpub || !existpriv)
+                            obj3.Import(celesiqeimportohet, obj3.getPath(), emricelesit);
+                        else {
+                            System.out.println("Qelesi " + emricelesit + " ekziston paraprakisht.");
+                        }
+
+                    }
+                    else if (exists21){
+                    try {
+
+
+                    Boolean existpub = obj3.FileExists(emricelesit, obj3.getPath(), ".pub.xml");
+                    Boolean existpriv = obj3.FileExists(emricelesit, obj3.getPath(), ".xml");
+
+
+                    if (!existpub && !existpriv)
+                        obj3.Import(celesiqeimportohet, obj3.getPath(), emricelesit);
+                    else {
+                        System.out.println("Qelesi " + emricelesit + " ekziston paraprakisht.");
+                    }}
+
+                    catch (Exception e)
+                    {
+
+                    }}
+                    else
+                    {
+                        System.out.println("Keni dhene direktorium te gabuar");
+                    }
+                    break;
 
     case "tap-code":
 
