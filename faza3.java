@@ -41,6 +41,25 @@ import java.io.File;
 import java.io.IOException;
 public class faza3 {
   
+  private static String Path = "..\\keys\\";
+    private static Connection connect = null;
+    private static Statement statement = null;
+    private static ResultSet resultSet = null;
+    private static String url = "jdbc:mysql://localhost:3306/ds_faza3";
+    private static String user = "root", pass="";
+
+    faza3() throws ClassNotFoundException, SQLException {
+         Connection connect = null;
+         Statement statement = null;
+        ResultSet resultSet = null;
+         String url = "jdbc:mysql://localhost:3306/ds_faza3";
+        String user = "root", pass="";
+
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connect= DriverManager.getConnection(url,user,pass);
+    }
+
+  
   public String getPath() {
         return Path;
     }
@@ -60,5 +79,8 @@ public class faza3 {
         }
         return doc;
     }
+  
+  
+  
   
   }
