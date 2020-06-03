@@ -45,27 +45,11 @@ switch (args[0]) {
 
         break;
         case "create-user":
-                    RSAKeyPairGenerator obj = new RSAKeyPairGenerator();
-                    String argumeti3 = args[1];
-                    Boolean exists = obj.FileExists(argumeti3, obj.getPath(), ".xml");
-
-                    if (argumeti3.matches("[_a-zA-Z0-9]+\\.?")) {
-                        if (!exists) {
-                            obj.create_user(argumeti3, obj.getPath());
-                        } else {
-                            System.out.println("Celesi '" + argumeti3 + "' ekziston paraprakisht.");
-                        }
-                    } else {
-                        System.out.println("Emri i celesit duhet te permbaje vetem shkronja , numra ose _");
-
-                    }
+                   
                     break;
 
                 case "delete-user":
-                    RSAKeyPairGenerator obj1 = new RSAKeyPairGenerator();
-                    String argumenti3 = args[1];
-                    obj1.delete_user(argumenti3, obj1.getPath());
-                    break;
+                   
 
 case "export-key":
                     RSAKeyPairGenerator obj2 = new RSAKeyPairGenerator();
