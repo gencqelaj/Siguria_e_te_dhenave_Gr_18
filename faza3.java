@@ -41,6 +41,24 @@ import java.io.File;
 import java.io.IOException;
 public class faza3 {
   
-  
+  public String getPath() {
+        return Path;
+    }
+    private static Document ConvertStringToDocumentBuilder(String stringBuilder) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        Document doc = null;
+        try {
+            builder = factory.newDocumentBuilder();
+            doc = builder.parse(new InputSource(new StringReader(stringBuilder)));
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
   
   }
