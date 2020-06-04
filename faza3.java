@@ -120,4 +120,10 @@ public class faza3 {
         }
     }
   
+   public static Boolean FileExists(String user, String path, String type) {
+        File tempFile = new File("" + path + user + type + "");
+        boolean exists = tempFile.exists();
+        return exists;
+    }
+  
   }
