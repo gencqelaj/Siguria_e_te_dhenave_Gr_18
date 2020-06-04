@@ -93,6 +93,12 @@ public class faza3 {
         }
     }
   
-  
+  public static byte[] generateSalt(){
+        Random rand = new Random();
+        byte[] salt = new byte[16];
+
+        rand.nextBytes(salt);
+        return salt;
+    }
   
   }
