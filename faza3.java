@@ -93,6 +93,45 @@ public class faza3 {
         }
     }
   
+  public static void create_user(String user, String path) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        KeyPair keyPair = keyPairGen.genKeyPair();
+        RSAPrivateCrtKey privKey = (RSAPrivateCrtKey) keyPair.getPrivate();
+        RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();
+        BigInteger n = privKey.getModulus();
+        BigInteger e = privKey.getPublicExponent();
+        BigInteger d = privKey.getPrivateExponent();
+        BigInteger p = privKey.getPrimeP();
+        BigInteger q = privKey.getPrimeQ();
+        BigInteger dp = privKey.getPrimeExponentP();
+        BigInteger dq = privKey.getPrimeExponentQ();
+        BigInteger inverseQ = privKey.getCrtCoefficient();
+        StringBuilder builder = new StringBuilder();
+        builder.append("<RSAKeyValue>\n");
+        write(builder, "Modulus", n);
+        write(builder, "Exponent", e);
+        write(builder, "P", p);
+        write(builder, "Q", q);
+        write(builder, "DP", dp);
+        write(builder, "DQ", dq);
+        write(builder, "InverseQ", inverseQ);
+        write(builder, "D", d);
+        builder.append("</RSAKeyValue>");
+        BigInteger modulus = pubKey.getModulus();
+        BigInteger publicExponent = privKey.getPublicExponent();
+        StringBuilder Publicbuilder = new StringBuilder();
+        Publicbuilder.append("<RSAKeyValue>\n");
+        write(Publicbuilder, "Modulus", modulus);
+        write(Publicbuilder, "Exponent", publicExponent);
+        Publicbuilder.append("</RSAKeyValue>");
+        Document doc = ConvertStringToDocumentBuilder(builder.toString());
+        Document PublicKeyDoc = ConvertStringToDocumentBuilder(Publicbuilder.toString());
+        writeXmlDocumentToXmlFile(doc, "" + path + user + ".xml");
+        System.out.println("Eshte krijuar celesi private keys/" + user + ".xml");
+        writeXmlDocumentToXmlFile(PublicKeyDoc, "" + path + user + ".pub.xml");
+        System.out.println("Eshte krijuar celesi public keys/" + user + ".pub.xml");
+    }
+  
   public static byte[] generateSalt(){
         Random rand = new Random();
         byte[] salt = new byte[16];
