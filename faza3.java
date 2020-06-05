@@ -219,4 +219,26 @@ public class faza3 {
         }
     }
   
+  public static Boolean validatePassword(String password){
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[.@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+        Pattern p = Pattern.compile(regex);
+        if (password == null) {
+            return false;
+        }
+        Matcher m = p.matcher(password);
+        return m.matches();
+    }
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException
+    {
+        // Static getInstance method is called with hashing SHA
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        // digest() method called
+        // to calculate message digest of an input
+        // and return array of byte
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+  
   }
