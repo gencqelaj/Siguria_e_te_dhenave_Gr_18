@@ -136,5 +136,11 @@ public class faza3 {
     }
 
 
+    public static String encode(BigInteger b) {
+        byte[] b1 = b.toByteArray();
+        String k = Base64.getEncoder().encodeToString(b1);
+
+        return k;
+    }
   
   }
