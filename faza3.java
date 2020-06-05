@@ -125,5 +125,16 @@ public class faza3 {
         boolean exists = tempFile.exists();
         return exists;
     }
+      private static void write(StringBuilder builder, String tag, BigInteger bigInt) throws UnsupportedEncodingException {
+        builder.append("\t<");
+        builder.append(tag);
+        builder.append(">");
+        builder.append(encode(bigInt));
+        builder.append("</");
+        builder.append(tag);
+        builder.append(">\n");
+    }
+
+
   
   }
