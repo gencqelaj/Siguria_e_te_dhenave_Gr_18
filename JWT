@@ -30,3 +30,87 @@ import java.util.Base64;
 import java.util.Date;
 
 import static org.jose4j.jwt.NumericDate.fromMilliseconds;
+
+
+public class JWT {
+
+    private String PRIVATE_KEY;
+    private String PUBLIC_KEY;
+    private String file;
+
+    public JWT()
+    {
+        //this.SECRET_KEY = secret_key;
+
+    }
+
+    public String getPRIVATE_KEY() {
+        return PRIVATE_KEY;
+    }
+
+    public void setPRIVATE_KEY(String PRIVATE_KEY) {
+        this.PRIVATE_KEY = PRIVATE_KEY;
+    }
+
+    public String getPUBLIC_KEY() {
+        return PUBLIC_KEY;
+    }
+
+    public void setPUBLIC_KEY(String PUBLIC_KEY) {
+        this.PUBLIC_KEY = PUBLIC_KEY;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public  String createJWT(String id, String issuer, String subject, long ttlMillis) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, SAXException, ParserConfigurationException {
+
+        //The JWT signature algorithm we will be using to sign the token
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.RS256;
+
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+
+        //We will sign our JWT with our ApiKey secret
+     //   byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(this.PRIVATE_KEY);
+      //  Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+      //  PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(this.PRIVATE_KEY.getBytes());
+        Document doc = ParseXMLFile(this.file);
+        doc.getDocumentElement().normalize();
+
+        String modules = doc.getElementsByTagName("Modulus").item(0).getTextContent();
+        String d = doc.getElementsByTagName("D").item(0).getTextContent();
+        byte[] modBytes = Base64.getDecoder().decode(modules);
+        byte[] dBytes = Base64.getDecoder().decode(d);
+        BigInteger mod = new BigInteger(1, modBytes);
+        BigInteger d_b = new BigInteger(1, dBytes);
+
+        RSAPrivateKeySpec privSpec = new RSAPrivateKeySpec(mod, d_b);
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = factory.generatePrivate(privSpec);
+       // EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(this.PRIVATE_KEY.getBytes("UTF-8"));
+
+
+        //Let's set the JWT Claims
+        JwtBuilder builder = Jwts.builder().setId(id)
+                .setIssuedAt(now)
+                .setSubject(subject)
+                .setIssuer(issuer)
+                .signWith(signatureAlgorithm,  privateKey);
+
+        //if it has been specified, let's add the expiration
+        if (ttlMillis > 0) {
+            long expMillis = nowMillis + ttlMillis;
+            Date exp = new Date(expMillis);
+            builder.setExpiration(exp);
+        }
+
+        //Builds the JWT and serializes it to a compact, URL-safe string
+        return builder.compact();
+    }
+
