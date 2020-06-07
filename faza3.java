@@ -270,4 +270,15 @@ public class faza3 {
         return part1+"."+part2+"."+part3+"."+part4;
     }
   
+  public static String toHexString(byte[] hash)
+    {
+        BigInteger number = new BigInteger(1, hash);
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+        while (hexString.length() < 32)
+        {
+            hexString.insert(0, '0');
+        }
+        return hexString.toString();
+    }
+  
   }
