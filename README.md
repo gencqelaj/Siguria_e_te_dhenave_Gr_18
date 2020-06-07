@@ -163,12 +163,16 @@ Funksioni encode  ka si parameter BigInteger b. Ne kete funksion e kthejme ne nj
 Komanda delete-user tani duhet te kerkoje fjalekalimin per perdoruesin qe deshiron te fshihet. Nese fjalekalimi eshte gabim, celesat dhe perdoruesi nuk mund te fshihen. Me dhenien e fjalekalimit , ai shkon dhe behet hash me saltin qe posedon ai perdorues dhe kontrollohet nese ai eshte i njejt me ate qe e kemi ne databaze. Me dhenien e passwordit korrekt , do te fshihen celesat dhe useri ne databaze. 
 
 
+ Komanda login: 
+ Login me ane te argumentit qe i jepet e kerkon ate username ne databaze dhe pastaj i mbledh te dhenat dhe e pyet perdoruesin per fjalekalimin ne menyre qe te kyqet ai username.
+ Ne qofte se passwordi nuk eshte i sakte atehere i jepet mundesia perdoruesit qe te shenoj perseri passwordin.
+ Ketu krahasohet hash-et e passwordat pasi qe passwordi nuk eshte i ruajtur ne databaze.
+ 
+ 
+ 
 
 
-
-
-
-
+Komanda status duhet te jep si argument tokenin e gjeneruar , dhe pastaj e validon ate nese eshte valid apo jo . Nese tokeni eshte valid dhe nuk ka skaduar , ne dalje do te shfaqet emri se i cilit perdorues eshte ai token dhe koha se deri kur do te jete valid ai token. Nese tokeni nuk eshte valid , ne dalje do te shfaqet mesazhi qe tregon se ai ka skaduar ose nuk ekziston.
 
 
 
