@@ -202,6 +202,58 @@ switch (args[0]) {
                         System.err.println(e.getMessage());
                     }
                     break;
+        
+         case "status":
+
+                    String argumenti_jwt = args[1];
+                    faza3 obj_status = new faza3();
+                    try {
+                            Statement stm_login = obj_status.getConnect().createStatement();
+                            String sql_login1 = "select * from users where jwt='" + argumenti_jwt + "'";
+
+                            ResultSet rs_login1 = stm_login.executeQuery(sql_login1);
+                            if (rs_login1.next()) {
+
+                                String username = rs_login1.getString("username");
+                                String JWT = rs_login1.getString("jwt");
+                                if (JWT.equals(argumenti_jwt)) {
+                                    JWT obj_Jwt = new JWT();
+                                    String currentPath = System.getProperty("user.dir");
+                                    String properPath  = Paths.get(currentPath).getParent().toString();
+                                    properPath = properPath + "\\keys\\"+ username+".pub.xml";
+                                    obj_Jwt.setFile(properPath);
+                                    JwtClaims jwtClaims = null;
+                                    try {
+                                        jwtClaims = obj_Jwt.decodeJWT(JWT);
+                                    }
+                                    catch(Exception e){
+                                        System.out.println("Tokeni nuk eshte valid");
+                                        System.exit(1);
+                                    }
+
+                                    Date date = new Date(Long.valueOf(jwtClaims.getClaimsMap().get("exp").toString()) * 1000);
+                                    DateFormat df = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz");
+                                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                                    System.out.println(formatter.format(date));
+
+                                        System.out.println("User: " + jwtClaims.getClaimsMap().get("iss"));
+                                        System.out.println("Valid: po");
+                                        System.out.println("Expires at: " + df.format(date));
+
+                                    } else {
+                                    System.out.println("This JWT does not exist");
+                                }
+
+                            } else {
+                                System.out.println("JWT nuk ekziston");
+                            }
+                            stm_login.close();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                            System.err.println("Got an exception! ");
+                            System.err.println(e.getMessage());
+                        }
+                    break;
 
 
 case "export-key":
