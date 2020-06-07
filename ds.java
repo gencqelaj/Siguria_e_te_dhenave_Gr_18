@@ -2,6 +2,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ds {
+    private static String Path = "..\\keys\\";
+    private static Connection connect = null;
+    private static Statement statement = null;
+    private static ResultSet resultSet = null;
+    private static String url = "jdbc:mysql://localhost:3306/siguria3?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String user = "root", pass = "Genci";
     public static void main(String[] args) {
       
         try {
