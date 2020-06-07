@@ -110,9 +110,47 @@ switch (args[0]) {
 
                     }
                     break;
+ case "delete-user":
+                    faza3 obj1 = new faza3();
+                    String argumenti3 = args[1];
+                    Statement stmt=null;
+                    stmt = obj1.getConnect().createStatement();;
 
-                case "delete-user":
-                   
+                    String sql = "SELECT * FROM users where username= '"+argumenti3+"'";
+
+                    ResultSet rs = stmt.executeQuery(sql);
+
+                    while (rs.next()) {
+
+                        String username = rs.getString("username");
+                        String salt = rs.getString("salt");
+
+                        String password = rs.getString("password");
+
+                        String password12 = obj1.getPassword("Jepni fjalekalimin: ");
+                        String hashPassword = faza3.toHexString(faza3.getSHA(salt + password12));
+
+
+                                while (!hashPassword.equals(password)) {
+                                    System.out.println("Fjalekalimi gabim!");
+                                    password12 = obj1.getPassword("Provoni perseri: ");
+                                    hashPassword = faza3.toHexString(faza3.getSHA(salt + password12));
+                                }
+                                if (hashPassword.equals(password)) {
+                                    Statement stmt1 = obj1.getConnect().createStatement();
+                                    String sql4 = "DELETE FROM users WHERE username ='" + username + "'";
+                                    stmt1.executeUpdate(sql4);
+                                    obj1.delete_user(argumenti3, obj1.getPath());
+
+                                } else {
+                                    System.out.println("Fjalekalimi gabim");
+                                    System.exit(0);
+                                }
+
+
+                    }
+
+                    break;
 
 case "export-key":
                     RSAKeyPairGenerator obj2 = new RSAKeyPairGenerator();
