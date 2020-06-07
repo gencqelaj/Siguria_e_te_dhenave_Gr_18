@@ -149,7 +149,37 @@ Funksioni writeString  ka si parametra StringBuilder builder, String tag, String
 
 Funksioni encode  ka si parameter BigInteger b. Ne kete funksion e kthejme ne nje array b1 b-ne se ciles i jemi qasur me ane te metodes toByteArray. Ne String k enkodojme stringun me ane te Base64.getEncoder().encodeToString(b1). Krejtesisht ne fund kemi return k.
 
-    
+ --------------------------------------------------------------------------------------------------------------------------------
+ 
+ Faza3
+ 
+ Komanda create-user :
+ 
+ Komanda create-user perveq qe krijon dy llojet e celesave per perdoruesin , tani krijohet edhe perdoruesi si username dhe ruhet ne databaze. Normalisht se se pari kerkohet te jepet nje password i cili duhet te permbaje me shume se 6 karaktere , dhe duhet te permbaje numra , simbole dhe shkronja te medha , ne menyre qe fjalekalimi te jete sa me i veshtire per tu gjetur . Pastaj gjenerohet nje salt dhe bashk me fjalekalimin do te behen hash ne menyre qe edhe nese databaza jone te hakohet , passwordat mos te jene te qasshem drejtperdrejte.Hash i fjalekalimeve eshte bere me algoritmin SHA-256. Perdoruesit i kerkohet qe te shenoje dy here passwordin dhe nese ato fjalekalime nuk perputhen atehere do te shfaqet mesazh lajmrimi. Nese gjithqka eshte ne rregull , do te krijohet useri dhe gjithashtu celesat e tij privat dhe publik.
+ 
+ 
+ Komanda delete-user :
+
+Komanda delete-user tani duhet te kerkoje fjalekalimin per perdoruesin qe deshiron te fshihet. Nese fjalekalimi eshte gabim, celesat dhe perdoruesi nuk mund te fshihen. Me dhenien e fjalekalimit , ai shkon dhe behet hash me saltin qe posedon ai perdorues dhe kontrollohet nese ai eshte i njejt me ate qe e kemi ne databaze. Me dhenien e passwordit korrekt , do te fshihen celesat dhe useri ne databaze. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Komanda write-message :
+	Komanda write-message e shkruan një mesazh të enkriptuar të dedikuar për një shfrytëzues . Ky mesazh ndahet ne pjese . Pjesa e pare paraqet emrin e pranuesit te mesazhit t enkoduar ne UTF-8 dhe pastaj ne Base64 . Pjesa e dyte do te permbaje nje initial vektor 8 bajtesh i inicializuar random i cili bashk me nje key te gjeneruar do te enkriptoje mesazhin qe duhet te dergohet me algoritmin DES.
+	Celesi per te dekriptuar mesazhin do te enkriptohet me RSA Algorithm duke e perdorur celesin publik te shfrytezuesit. Nese komanda pranon edhe opsionin --sender <token>, atehere tokeni duhet te perdoret ne menyre qe te identifikohet derguesi i mesazhit .Fillimisht validohet tokeni nese eshte ne dispozicion, dhe mesazhit te pergjithshem i shtohen pjeset qe permbajne emrin e derguesit te enkoduar ne UTF-8 dhe pastaj ne Base64 , pastaj edhe nenshkrimin qe behet me celesin privat te derguesit . Nese gjate ekzekutimit te kesaj komande do te mungojne celesat perkates ,atehere ne console do te shfaqet mesazhi per gabimet eventuale qe jane bere .  
+
+ 
 
 
   
