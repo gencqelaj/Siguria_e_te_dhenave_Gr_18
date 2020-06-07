@@ -241,4 +241,33 @@ public class faza3 {
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
   
+    public static String writeMessage(String name, String message) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, ParserConfigurationException, InvalidKeySpecException, SAXException {
+
+        byte[] IV = new byte[8];
+        new Random().nextBytes(IV);
+        String iv = new String(IV);
+
+
+        KeyGenerator kg = KeyGenerator.getInstance("DES");
+        SecretKey myDESKey = kg.generateKey();
+
+        String key = myDESKey.toString();
+
+
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE,myDESKey);
+        byte[] text = message.getBytes();
+        byte[] textEnc = cipher.doFinal(text);
+        byte[] pjesa3 = encrypt(key,name);
+
+
+
+
+        String part1 = Base64.getEncoder().encodeToString(name.getBytes("UTF-8"));
+        String part2 = Base64.getEncoder().encodeToString(iv.getBytes());
+        String part3 = Base64.getEncoder().encodeToString(pjesa3);
+        String part4 = Base64.getEncoder().encodeToString(textEnc);
+        return part1+"."+part2+"."+part3+"."+part4;
+    }
+  
   }
