@@ -460,6 +460,221 @@ case "export-key":
             System.out.println("Ju lutem shtypni encrypt ose decrypt per te ekzekutuar");
 
         break;
+          String argumenti1_write = args[1];
+                    faza3 obj_write = new faza3();
+                    String mesazhi = args[2];
+                    String currentPathi = System.getProperty("user.dir");
+                    String properPathi = Paths.get(currentPathi).getParent().toString();
+                    properPathi = properPathi + "\\keys\\"+ argumenti1_write+".pub.xml";
+
+                    File Dir = new File(properPathi);
+                    boolean existspubkey = Dir.exists();
+                    if(!existspubkey){
+                        System.out.println("Mungon celesi publik.");
+                        System.exit(1);
+                    }
+                    if (nrArgs==3){
+                        System.out.println(obj_write.writeMessage(argumenti1_write,mesazhi));
+                    }
+                    else if (nrArgs==4){
+                        try {
+                            String pathi = args[3];
+                            File tmpDir = new File(pathi);
+                            boolean exists21 = tmpDir.exists();
+                            if (exists21) {
+                                FileWriter myWriter = new FileWriter(pathi);
+                                String message = obj_write.writeMessage(argumenti1_write, mesazhi);
+                                myWriter.write(message);
+//                                System.out.println("U shkrua.");
+                                myWriter.close();
+                            }else
+                            {
+                                try{
+                                    File myObj = new File(pathi);
+                                    myObj.createNewFile();
+                                    FileWriter myWriter1 = new FileWriter(pathi);
+                                    String message = obj_write.writeMessage(argumenti1_write,mesazhi);
+                                    myWriter1.write(message);
+                                    System.out.println("U shkrua");
+                                    myWriter1.close();
+                                }catch (IOException e) {
+                                    System.out.println("Ju lutem shenoni nje path valid");
+                                    e.printStackTrace();
+                                }
+                        }}catch (Exception e ){
+                            e.printStackTrace();
+                        }
+                    }
+
+                    else if(nrArgs==5){
+
+//                        String pathi = args[3];
+//                        File tmpDir = new File(pathi);
+//                        boolean exists21 = tmpDir.exists();
+                        String token = args[4];
+
+                        try {
+                            Statement stm_login = obj_write.getConnect().createStatement();
+                            String sql_login1 = "select * from users where jwt='" + token + "'";
+
+                            ResultSet rs_login1 = stm_login.executeQuery(sql_login1);
+                            if (rs_login1.next()) {
+
+                                String username = rs_login1.getString("username");
+                                String JWT = rs_login1.getString("jwt");
+                                String sender = username;
+
+                                if (JWT.equals(token)) {
+                                    JWT obj_jwt = new JWT();
+                                    String currentPath = System.getProperty("user.dir");
+                                    String properPath  = Paths.get(currentPath).getParent().toString();
+//                                    properPath = properPath + "\\keys\\"+ argumenti1_write+".pub.xml";
+                                    properPath = properPath + "\\keys\\"+ sender +".pub.xml";
+
+                                    obj_jwt.setFile(properPath);
+                                    JwtClaims jwtClaims = null;
+                                    try {
+                                        jwtClaims = obj_jwt.decodeJWT(JWT);
+                                        System.out.println(obj_write.WriteMessage(argumenti1_write, mesazhi,sender));
+//                                        obj_write.WriteMessage(argumenti1_write, mesazhi, sender);
+                                    }
+                                    catch(Exception e){
+                                        System.out.println("Tokeni nuk eshte valid.");
+                                        System.exit(1);
+                                    }
+
+                                    Date date = new Date(Long.valueOf(jwtClaims.getClaimsMap().get("exp").toString()) * 1000);
+                                    DateFormat df = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz");
+                                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                                    System.out.println(formatter.format(date));
+                                    System.out.println("Expires at: " + df.format(date));
+
+                        }
+                        }
+                        }catch(Exception e){
+                            System.out.println("Query deshtoi.");
+                            }
+                    }
+                    else if(nrArgs==6) {
+                        System.out.println("we have 6 args");
+                        String token = args[5];
+
+                        try {
+                            String file = args[3];
+                            File tmpDir = new File(file);
+                            boolean exists21 = tmpDir.exists();
+                            if (!exists21) {
+                                try {
+                                    Statement stm_login = obj_write.getConnect().createStatement();
+                                    String sql_login1 = "select * from users where jwt='" + token + "'";
+
+                                    ResultSet rs_login1 = stm_login.executeQuery(sql_login1);
+                                    if (rs_login1.next()) {
+
+                                        String username = rs_login1.getString("username");
+                                        System.out.println(username);
+                                        String JWT = rs_login1.getString("jwt");
+                                        String sender = username;
+
+                                        if (JWT.equals(token)) {
+                                            JWT obj_jwt = new JWT();
+                                            String currentPath = System.getProperty("user.dir");
+                                            String properPath = Paths.get(currentPath).getParent().toString();
+//                                    properPath = properPath + "\\keys\\"+ argumenti1_write+".pub.xml";
+                                            properPath = properPath + "\\keys\\" + sender + ".pub.xml";
+
+                                            obj_jwt.setFile(properPath);
+                                            JwtClaims jwtClaims = null;
+                                            try {
+                                                System.out.println("para decode");
+
+                                                jwtClaims = obj_jwt.decodeJWT(JWT);
+                                                System.out.println("pas decode");
+                                                FileWriter myWriter = new FileWriter(file);
+                                                String message = obj_write.WriteMessage(argumenti1_write, mesazhi, sender);
+                                                myWriter.write(message);
+                                                System.out.println("U shkrua.");
+                                                myWriter.close();
+                                            } catch (Exception e) {
+                                                System.out.println("Tokeni nuk eshte valid.");
+                                                System.exit(1);
+                                            }
+
+                                            Date date = new Date(Long.valueOf(jwtClaims.getClaimsMap().get("exp").toString()) * 1000);
+                                            DateFormat df = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz");
+                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                                            System.out.println(formatter.format(date));
+                                            System.out.println("Expires at: " + df.format(date));
+
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Query deshtoi.");
+                                }
+
+
+                            }else
+                            {
+                                try{
+                                        Statement stm_login = obj_write.getConnect().createStatement();
+                                        String sql_login1 = "select * from users where jwt='" + token + "'";
+
+                                        ResultSet rs_login1 = stm_login.executeQuery(sql_login1);
+                                        if (rs_login1.next()) {
+
+                                            String username = rs_login1.getString("username");
+                                            String JWT = rs_login1.getString("jwt");
+                                            String sender = username;
+
+                                            if (JWT.equals(token)) {
+                                                JWT obj_jwt = new JWT();
+                                                String currentPath = System.getProperty("user.dir");
+                                                String properPath  = Paths.get(currentPath).toString();
+//                                    properPath = properPath + "\\keys\\"+ argumenti1_write+".pub.xml";
+                                                properPath = properPath + "\\keys\\"+ sender +".pub.xml";
+
+                                                obj_jwt.setFile(properPath);
+                                                JwtClaims jwtClaims = null;
+                                                try {
+                                                    jwtClaims = obj_jwt.decodeJWT(JWT);
+
+                                                    File myObj = new File(file);
+                                                    myObj.createNewFile();
+                                                    FileWriter myWriter1 = new FileWriter(file);
+                                                    String message = obj_write.WriteMessage(argumenti1_write,mesazhi, sender);
+                                                    myWriter1.write(message);
+                                                    System.out.println("U shkrua");
+                                                    myWriter1.close();
+                                                }
+                                                catch(Exception e){
+                                                    System.out.println("Tokeni nuk eshte valid.");
+                                                    System.exit(1);
+                                                }
+
+                                                Date date = new Date(Long.valueOf(jwtClaims.getClaimsMap().get("exp").toString()) * 1000);
+                                                DateFormat df = new SimpleDateFormat("dd MMM yyyy hh:mm:ss zzz");
+                                                SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                                                System.out.println(formatter.format(date));
+                                                System.out.println("Expires at: " + df.format(date));
+
+                                            }
+                                        }
+
+                                }catch (Exception e) {
+                                    System.out.println("Ju lutem shenoni nje path valid");
+                                    e.printStackTrace();
+                                }
+                            }
+                        }catch (Exception e ){
+                            e.printStackTrace();
+                        }
+
+
+
+                        }else
+                        {
+                            System.out.println("Gabim ne shenim te argumenteve.");
+                        }
 
     default:
         System.out.println("Ju lutem shtypni njeren nga komandat permutation morse ,tap-code, create-user,delete-user, apo export-key si argument te pare");
