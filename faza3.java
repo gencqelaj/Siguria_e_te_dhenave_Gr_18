@@ -312,48 +312,52 @@ public class faza3 {
         return  priv;
     }
   
-  static String getPassword(String prompt) {
-
-        String password = "";
-        ConsoleEraser consoleEraser = new ConsoleEraser();
-        System.out.print(prompt);
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        consoleEraser.start();
-        try {
-            password = in.readLine();
-        }
-        catch (IOException e){
-            System.out.println("Error trying to read your password!");
-            System.exit(1);
-        }
-
-        consoleEraser.halt();
-        System.out.print("\b ");
-
-        return password;
+  public static String writeMessage(String name, String message) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, ParserConfigurationException, InvalidKeySpecException, SAXException {
+        byte[] IV = new byte[8];
+        new Random().nextBytes(IV);
+        String iv = new String(IV);
+        KeyGenerator kg = KeyGenerator.getInstance("DES");
+        SecretKey myDESKey = kg.generateKey();
+        String key = myDESKey.toString();
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE,myDESKey);
+        byte[] text = message.getBytes();
+        byte[] textEnc = cipher.doFinal(text);
+        byte[] pjesa3 = encrypt(key,name);
+        String part1 = Base64.getEncoder().encodeToString(name.getBytes("UTF-8"));
+        String part2 = Base64.getEncoder().encodeToString(iv.getBytes());
+        String part3 = Base64.getEncoder().encodeToString(pjesa3);
+        String part4 = Base64.getEncoder().encodeToString(textEnc);
+        return part1+"."+part2+"."+part3+"."+part4;
     }
-    private static class ConsoleEraser extends Thread {
-        private boolean running = true;
-        public void run() {
-            while (running) {
-                System.out.print("\b ");
-                try {
-                    Thread.currentThread().sleep(1);
-                }
-                catch(InterruptedException e) {
-                    break;
-                }
-            }
-        }
-        public synchronized void halt() {
-            running = false;
-        }
+
+    public static String WriteMessage(String name, String message, String sender) throws Exception {
+        byte[] IV = new byte[8];
+        new Random().nextBytes(IV);
+        String iv = new String(IV);
+        KeyGenerator kg = KeyGenerator.getInstance("DES");
+        SecretKey myDESKey = kg.generateKey();
+        String key = myDESKey.toString();
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE,myDESKey);
+        byte[] text = message.getBytes();
+        byte[] textEnc = cipher.doFinal(text);
+        byte[] pjesa3 = encrypt(key,name);
+        byte[] pjesa4 = sender.getBytes();
+        String signature = sign(textEnc.toString(),getPrivateKey(""+sender));
+        String part1 = Base64.getEncoder().encodeToString(name.getBytes("UTF-8"));
+        String part2 = Base64.getEncoder().encodeToString(iv.getBytes());
+        String part3 = Base64.getEncoder().encodeToString(pjesa3);
+        String part4 = Base64.getEncoder().encodeToString(textEnc);
+        String part5 = Base64.getEncoder().encodeToString(pjesa4);
+        String part6 = Base64.getEncoder().encodeToString(signature.getBytes());
+        return part1+"."+part2+"."+part3+"."+part4+"."+part5+"."+part6;
     }
-  
-  public static Boolean validatePassword(String password){
+
+    public static Boolean validatePassword(String password){
         String regex = "^(?=.*[0-9])"
                 + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[.@#$%^&+=])"
+                + "(?=.*[-_.@#$%^&+=])"
                 + "(?=\\S+$).{8,20}$";
         Pattern p = Pattern.compile(regex);
         if (password == null) {
@@ -362,54 +366,104 @@ public class faza3 {
         Matcher m = p.matcher(password);
         return m.matches();
     }
+
+    static String getUserName(String prompt){
+        String username = null;
+        System.out.print(prompt);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            username = br.readLine();
+        }
+        catch (IOException e) {
+            System.out.println("Error trying to read your name!");
+            System.exit(1);
+        }
+        return username;
+    }
+
+    static String getPassword(String prompt) {
+
+        String password = "";
+        //Console console = System.console();
+        System.out.print(prompt);
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//        consoleEraser.start();
+
+        Scanner sc = new Scanner(System.in);
+        char[] passwordArray;
+        Console console = System.console();
+        //            password = in.readLine();
+        passwordArray = console.readPassword("Jepni fjalekalimin: ");
+        password =  new String(passwordArray);
+
+        System.out.print("\b ");
+
+        return password;
+    }
+  
+    public static void DeleteFile(String filename){
+        File myObj = new File("..//passwords//"+filename+"'s_password.txt");
+        if (myObj.delete()) {
+            System.out.println("Deleted the file: " + myObj.getName());
+        } else {
+            System.out.println("Failed to delete the file "+myObj.getName()+".");
+        }
+    }
+
     public static byte[] getSHA(String input) throws NoSuchAlgorithmException
     {
-        // Static getInstance method is called with hashing SHA
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        // digest() method called
-        // to calculate message digest of an input
-        // and return array of byte
+
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
-  
-    public static String writeMessage(String name, String message) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, ParserConfigurationException, InvalidKeySpecException, SAXException {
 
-        byte[] IV = new byte[8];
-        new Random().nextBytes(IV);
-        String iv = new String(IV);
-
-
-        KeyGenerator kg = KeyGenerator.getInstance("DES");
-        SecretKey myDESKey = kg.generateKey();
-
-        String key = myDESKey.toString();
-
-
-        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE,myDESKey);
-        byte[] text = message.getBytes();
-        byte[] textEnc = cipher.doFinal(text);
-        byte[] pjesa3 = encrypt(key,name);
-
-
-
-
-        String part1 = Base64.getEncoder().encodeToString(name.getBytes("UTF-8"));
-        String part2 = Base64.getEncoder().encodeToString(iv.getBytes());
-        String part3 = Base64.getEncoder().encodeToString(pjesa3);
-        String part4 = Base64.getEncoder().encodeToString(textEnc);
-        return part1+"."+part2+"."+part3+"."+part4;
-    }
-  
-  public static String toHexString(byte[] hash)
+    public static String toHexString(byte[] hash)
     {
         BigInteger number = new BigInteger(1, hash);
+
         StringBuilder hexString = new StringBuilder(number.toString(16));
+
         while (hexString.length() < 32)
         {
             hexString.insert(0, '0');
         }
+
         return hexString.toString();
     }
-  
-  }
+
+    public static void readMessage(String ciphertext) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ParserConfigurationException, IllegalBlockSizeException, BadPaddingException, SAXException, InvalidKeySpecException {
+        String str = ciphertext;
+        String[] arrSplit = str.split("\\.");
+        //marresi
+        byte[] asBytes = Base64.getDecoder().decode(arrSplit[0]);
+        String part1 = new String(asBytes, StandardCharsets.UTF_8);
+        System.out.println("Marresi:  " + part1);
+        //---------------------------------------------------------------
+        byte[] asBytes2 = Base64.getDecoder().decode(arrSplit[1]);
+        System.out.println("Part2"+asBytes2);
+        byte[] asBytes3 = Base64.getDecoder().decode(arrSplit[2]);
+        String part3 = new String(asBytes3);
+        byte[] asBytes4= Base64.getDecoder().decode(arrSplit[3]);
+        String part4 = new String(asBytes4);
+        System.out.println("Part3 =" +asBytes3);
+        System.out.println("Part4 =" +asBytes4);
+        String desKey = decrypt(asBytes3,part1);
+        DESKeySpec dks = new DESKeySpec(desKey.getBytes());
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("DES");
+        SecretKey desKey1 = skf.generateSecret(dks);
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5PADDING");
+        cipher.init(Cipher.DECRYPT_MODE,desKey1);
+        byte[] textDec = cipher.doFinal(part4.getBytes());
+        System.out.println(textDec);
+    }
+
+    public static String sign(String plainText, PrivateKey privateKey) throws Exception {
+        Signature privateSignature = Signature.getInstance("SHA256withRSA");
+        privateSignature.initSign(privateKey);
+        privateSignature.update(plainText.getBytes());
+        byte[] signature = privateSignature.sign();
+        return Base64.getEncoder().encodeToString(signature);
+    }
+
+
+}
