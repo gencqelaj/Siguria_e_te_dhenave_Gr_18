@@ -45,18 +45,19 @@ public class faza3 {
     private static Connection connect = null;
     private static Statement statement = null;
     private static ResultSet resultSet = null;
-    private static String url = "jdbc:mysql://localhost:3306/ds_faza3";
+    private static String url = "jdbc:mysql://localhost:3306/siguria3";
     private static String user = "root", pass="";
 
     faza3() throws ClassNotFoundException, SQLException {
-         Connection connect = null;
-         Statement statement = null;
-        ResultSet resultSet = null;
-         String url = "jdbc:mysql://localhost:3306/ds_faza3";
-        String user = "root", pass="";
+        String currentPath = System.getProperty("user.dir");
+        this.Path  = Paths.get(currentPath).getParent().toString();
+        this.Path = this.Path + "\\keys\\";
+
+        String url = "jdbc:mysql://localhost:3306/siguria3?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        String user = "root", pass="Genci";
 
         Class.forName("com.mysql.cj.jdbc.Driver");
-        connect= DriverManager.getConnection(url,user,pass);
+        this.connect= DriverManager.getConnection(url,user,pass);
     }
 
   
