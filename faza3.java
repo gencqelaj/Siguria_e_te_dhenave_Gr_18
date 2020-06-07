@@ -95,6 +95,14 @@ public class faza3 {
         }
     }
   
+  private static Document ParseXMLFile(String file) throws ParserConfigurationException, IOException, SAXException {
+        File inputFile = new File(file);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(inputFile);
+        return doc;
+    }
+  
   public static void create_user(String user, String path) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
         KeyPair keyPair = keyPairGen.genKeyPair();
