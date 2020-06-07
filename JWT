@@ -114,3 +114,61 @@ public class JWT {
         return builder.compact();
     }
 
+    public String createJWT_v2(String id, String issuer, String subject, long ttlMillis) throws IOException, SAXException, ParserConfigurationException, NoSuchAlgorithmException, InvalidKeySpecException, JoseException {
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+        // Date nowinmillisec=()now*1000;
+        Document doc = ParseXMLFile(this.file);
+        doc.getDocumentElement().normalize();
+
+        String modules = doc.getElementsByTagName("Modulus").item(0).getTextContent();
+        String d = doc.getElementsByTagName("D").item(0).getTextContent();
+        byte[] modBytes = Base64.getDecoder().decode(modules);
+        byte[] dBytes = Base64.getDecoder().decode(d);
+        BigInteger mod = new BigInteger(1, modBytes);
+        BigInteger d_b = new BigInteger(1, dBytes);
+
+        RSAPrivateKeySpec privSpec = new RSAPrivateKeySpec(mod, d_b);
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = factory.generatePrivate(privSpec);
+        NumericDate testNow = NumericDate.fromMilliseconds(nowMillis);
+
+        JwtClaims claims = new JwtClaims();
+        claims.setIssuer(issuer);  // who creates the token and signs it
+        claims.setExpirationTimeMinutesInTheFuture(20); // time when the token will expire (20 minutes from now)
+        claims.setGeneratedJwtId(); // a unique identifier for the token
+        claims.setIssuedAt(testNow);  // when the token was issued/created (now)
+        claims.setNotBeforeMinutesInThePast(2); // time before which the token is not yet valid (2 minutes ago)
+
+        // A JWT is a JWS and/or a JWE with JSON claims as the payload.
+        // In this example it is a JWS so we create a JsonWebSignature object.
+        JsonWebSignature jws = new JsonWebSignature();
+
+        // The payload of the JWS is JSON content of the JWT Claims
+        jws.setPayload(claims.toJson());
+
+        // The JWT is signed using the private key
+       // jws.setKey(rsaJsonWebKey.getPrivateKey());
+        jws.setKey(privateKey);
+
+        // Set the Key ID (kid) header because it's just the polite thing to do.
+        // We only have one key in this example but a using a Key ID helps
+        // facilitate a smooth key rollover process
+       // jws.setKeyIdHeaderValue(rsaJsonWebKey.getKeyId());
+
+        // Set the signature algorithm on the JWT/JWS that will integrity protect the claims
+        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
+
+        // Sign the JWS and produce the compact serialization or the complete JWT/JWS
+        // representation, which is a string consisting of three dot ('.') separated
+        // base64url-encoded parts in the form Header.Payload.Signature
+        // If you wanted to encrypt it, you can simply set this jwt as the payload
+        // of a JsonWebEncryption object and set the cty (Content Type) header to "jwt".
+        String jwt = jws.getCompactSerialization();
+
+
+        // Now you can do something with the JWT. Like send it to some other party
+        // over the clouds and through the interwebs.
+        System.out.println("JWT: " + jwt);
+        return jwt;
+    }
