@@ -196,6 +196,51 @@ public class faza3 {
 
         return k;
     }
+  
+  public static PublicKey getPublicKey(String name){
+        PublicKey publickey =null;
+        String modulus = "";
+        String exponent = "";
+        try{
+            File file = new File("C:\\Users\\Admin\\IdeaProjects\\siguria3_2\\keys\\" + name + ".pub.xml");
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nodeList = doc.getElementsByTagName("RSAKeyValue");
+
+            for (int itr = 0; itr < nodeList.getLength(); itr++) {
+                Node node = nodeList.item(itr);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) node;
+
+                    modulus = eElement.getElementsByTagName("Modulus").item(0).getTextContent();
+                    exponent = eElement.getElementsByTagName("Exponent").item(0).getTextContent();
+
+                }
+            }
+
+
+            KeyFactory rsaFactory = KeyFactory.getInstance("RSA");
+            RSAPublicKeySpec rsaKeyspec = new RSAPublicKeySpec(new BigInteger(modulus), new BigInteger(exponent));
+            PublicKey pubKey = rsaFactory.generatePublic(rsaKeyspec);
+
+            return pubKey;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+
+        return publickey;
+    }
+  
   static String getPassword(String prompt) {
 
         String password = "";
