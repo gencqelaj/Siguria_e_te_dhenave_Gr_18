@@ -80,6 +80,7 @@ public class faza3 {
         }
         return doc;
     }
+  
     private static void writeXmlDocumentToXmlFile(Document xmlDocument, String fileName) {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer;
