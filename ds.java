@@ -151,6 +151,58 @@ switch (args[0]) {
                     }
 
                     break;
+        case "login":
+                    faza3 obj_login = new faza3();
+                    String argumenti_login = args[1];
+                    try {
+                        Statement stm_login = obj_login.getConnect().createStatement();
+                        String sql_login1 = "select * from users where username='" + argumenti_login + "'";
+                        //  stm_login.executeUpdate(sql_login1);
+                        ResultSet rs_login1 = stm_login.executeQuery(sql_login1);
+                        if (rs_login1.next()) {
+                            String username = rs_login1.getString("username");
+                            if (username.equals(argumenti_login)) {
+                                int id = rs_login1.getInt("id");
+                                String password = obj_login.getPassword("Jepni fjalekalimin: ");
+                                String salt = rs_login1.getString("salt");
+                                String hashPassword = faza3.toHexString(faza3.getSHA(salt + password));
+                                String user_password = rs_login1.getString("password");
+                                while(!hashPassword.equals(user_password))
+                                {
+                                    password = obj_login.getPassword("Jepni fjalekalimin: ");
+                                    hashPassword = faza3.toHexString(faza3.getSHA(salt + password));
+                                }
+                                if (hashPassword.equals(user_password)) {
+                                    JWT objWT = new JWT();
+                                    String currentPath = System.getProperty("user.dir");
+                                    String properPath  = Paths.get(currentPath).getParent().toString();
+                                    properPath = properPath + "\\keys\\"+ argumenti_login+".xml";
+                                    objWT.setFile(properPath);
+                                    String JWT = objWT.createJWT_v2(Integer.toString(id), username, "jwt_Token", TimeUnit.MINUTES.toMillis(20));
+                                    System.out.println("Logged in :)");
+                                    String query_update = "update users set jwt = '" + JWT + "' where username = '" + username + "'";
+                                    stm_login.executeUpdate(query_update);
+
+                                    System.out.println(JWT);
+
+                                } else {
+                                    System.out.println("Password is wrong");
+                                }
+
+                            } else {
+                                System.out.println("This user does not exist");
+                            }
+
+                        } else {
+                            System.out.println("Useri nuk ekziston");
+                        }
+                        stm_login.close();
+                    } catch (Exception e) {
+                        System.err.println("Got an exception! ");
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+
 
 case "export-key":
                     RSAKeyPairGenerator obj2 = new RSAKeyPairGenerator();
