@@ -460,6 +460,7 @@ case "export-key":
             System.out.println("Ju lutem shtypni encrypt ose decrypt per te ekzekutuar");
 
         break;
+        case "write-message":
           String argumenti1_write = args[1];
                     faza3 obj_write = new faza3();
                     String mesazhi = args[2];
@@ -675,7 +676,7 @@ case "export-key":
                         {
                             System.out.println("Gabim ne shenim te argumenteve.");
                         }
-
+break;
     default:
         System.out.println("Ju lutem shtypni njeren nga komandat permutation morse ,tap-code, create-user,delete-user, apo export-key si argument te pare");
 
