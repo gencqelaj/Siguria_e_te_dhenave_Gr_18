@@ -51,7 +51,64 @@ switch (args[0]) {
 
         break;
         case "create-user":
-                   
+                    faza3 obj = new faza3();
+
+                    String argumenti1 = args[1];
+                    Boolean exists = obj.FileExists(argumenti1, obj.getPath(), ".xml");
+                    if (argumenti1.matches("[_a-zA-Z0-9]+\\.?")) {
+
+                        if (!exists) {
+
+                            String password = obj.getPassword("Jepni fjalekalimin: ");
+
+                            while (password.length()<6){
+                                System.out.println("Fjalekalimi duhet te kete me shume se 6 karaktere");
+                                password = obj.getPassword("Jepni fjalekalimin: ");
+//                                System.exit(0);
+                            }
+                            while (!obj.validatePassword(password)){
+                                System.out.println("Fjalekalimi juaj duhet te permbaje shkronja,numra " +
+                                        "dhe simbole , nuk duhet te jete i zbrazet dhe nuk duhet" +
+                                        " te permbaje hapesira");
+                                password = obj.getPassword("Jepni fjalekalimin: ");
+
+//                                System.exit(0);
+                            }
+                            String password2 = obj.getPassword("Perserit fjalekalimin: ");
+                            String argumenti2 = password;
+                            String argumenti_2 = password2;
+                            while (!argumenti2.equals(argumenti_2)) {
+                                System.out.println("GABIM : Fjalekalimet nuk jane te njejta");
+                                password2 = obj.getPassword("Perserit fjalekalimin: ");
+                                argumenti_2 = password2;
+//                                System.exit(0);
+                            }
+                                byte[] salt1 = obj.generateSalt();
+                                String s = Base64.getEncoder().encodeToString(salt1);
+                                String hashPassword = faza3.toHexString(faza3.getSHA(s + password));
+                                obj.create_user(argumenti1, obj.getPath());
+
+
+                                try {
+
+                                    Statement stmt = obj.getConnect().createStatement();
+                                    String sql = "INSERT INTO `users` (`id`, `username`, `salt`, `password`) VALUES (NULL,'" + argumenti1 + "','" + s + "','" + hashPassword + "')";
+                                    stmt.executeUpdate(sql);
+                                    stmt.close();
+                                } catch (Exception e) {
+                                    System.err.println("Got an exception! ");
+                                    System.err.println(e.getMessage());
+                                }
+
+
+
+                        } else {
+                            System.out.println("Celesi '" + argumenti1 + "' ekziston paraprakisht.");
+                        }
+                    } else {
+                        System.out.println("Emri i celesit duhet te permbaje vetem shkronja , numra ose _");
+
+                    }
                     break;
 
                 case "delete-user":
