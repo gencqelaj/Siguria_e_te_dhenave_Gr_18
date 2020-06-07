@@ -271,6 +271,47 @@ public class faza3 {
         return cipher.doFinal(data.getBytes());
     }
   
+  public static String decrypt(byte[] data, String name) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, ParserConfigurationException, InvalidKeySpecException, SAXException, IOException {
+        try {
+            Cipher rsa;
+            rsa = Cipher.getInstance("RSA");
+            rsa.init(Cipher.DECRYPT_MODE, getPrivateKey(name));
+            byte[] utf8 = rsa.doFinal(data);
+            return new String(utf8, "UTF8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+  
+  public static PrivateKey getPrivateKey(String name) throws ParserConfigurationException, IOException, SAXException, NoSuchAlgorithmException, InvalidKeySpecException {
+        String modulus = "";
+        String exponent = "";
+        File file = new File("C:\\Users\\Admin\\IdeaProjects\\siguria3_2\\keys\\"+name+".pub.xml");
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(file);
+        doc.getDocumentElement().normalize();
+        NodeList nodeList = doc.getElementsByTagName("RSAKeyValue");
+        for (int itr = 0; itr < nodeList.getLength(); itr++) {
+            Node node = nodeList.item(itr);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                modulus = eElement.getElementsByTagName("Modulus").item(0).getTextContent();
+                exponent = eElement.getElementsByTagName("Exponent").item(0).getTextContent();
+            }
+        }
+        BigInteger modulus1 = new BigInteger(Base64.getDecoder().decode(modulus));
+        BigInteger exponent1 = new BigInteger(Base64.getDecoder().decode(exponent));
+// Create private and public key specs
+        RSAPrivateKeySpec privateSpec = new RSAPrivateKeySpec(modulus1, exponent1);
+// Create a key factory
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+// Create the RSA private and public keys
+        PrivateKey priv = factory.generatePrivate(privateSpec);
+        return  priv;
+    }
+  
   static String getPassword(String prompt) {
 
         String password = "";
