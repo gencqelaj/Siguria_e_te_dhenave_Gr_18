@@ -265,6 +265,12 @@ public class faza3 {
         return  pub;
     }
   
+  public static byte[] encrypt(String data, String publicKey) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, ParserConfigurationException, InvalidKeySpecException, SAXException, IOException {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, GetPublicKey(publicKey));
+        return cipher.doFinal(data.getBytes());
+    }
+  
   static String getPassword(String prompt) {
 
         String password = "";
