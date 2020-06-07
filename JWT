@@ -209,3 +209,10 @@ public class JWT {
         Document doc = dBuilder.parse(inputFile);
         return doc;
     }
+    
+     public static NumericDate now()
+    {
+        return fromMilliseconds(System.currentTimeMillis());
+    }
+}
+
