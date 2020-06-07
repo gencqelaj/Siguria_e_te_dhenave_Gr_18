@@ -220,7 +220,6 @@ public class faza3 {
                 }
             }
 
-
             KeyFactory rsaFactory = KeyFactory.getInstance("RSA");
             RSAPublicKeySpec rsaKeyspec = new RSAPublicKeySpec(new BigInteger(modulus), new BigInteger(exponent));
             PublicKey pubKey = rsaFactory.generatePublic(rsaKeyspec);
@@ -239,6 +238,31 @@ public class faza3 {
         }
 
         return publickey;
+    }
+  
+  public static PublicKey GetPublicKey(String name) throws NoSuchAlgorithmException, InvalidKeySpecException, ParserConfigurationException, IOException, SAXException {
+        String modulus = "";
+        String exponent = "";
+        File file = new File("C:\\Users\\Admin\\IdeaProjects\\siguria3_2\\keys\\" + name + ".pub.xml");
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(file);
+        doc.getDocumentElement().normalize();
+        NodeList nodeList = doc.getElementsByTagName("RSAKeyValue");
+        for (int itr = 0; itr < nodeList.getLength(); itr++) {
+            Node node = nodeList.item(itr);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                modulus = eElement.getElementsByTagName("Modulus").item(0).getTextContent();
+                exponent = eElement.getElementsByTagName("Exponent").item(0).getTextContent();
+            }
+        }
+        BigInteger modulus1 = new BigInteger(Base64.getDecoder().decode(modulus));
+        BigInteger pubExponent = new BigInteger(Base64.getDecoder().decode(exponent));
+        RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(modulus1, pubExponent);
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+        PublicKey pub = factory.generatePublic(publicSpec);
+        return  pub;
     }
   
   static String getPassword(String prompt) {
